@@ -98,6 +98,76 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Restart xmonad
     , ((modm,               xK_q     ),         spawn "xmonad --recompile; xmonad --restart")
+
+    -- lock TODO: fix
+    , ((modm .|. shiftMask, xK_l     ),         spawn "slock")
+
+    -- power
+    , ((modm,               xK_Delete),         spawn "/home/mhiggin5/programs/bash/exit.sh")
+
+    -- transdown
+    , ((modm,               xK_Down  ),         spawn "transset-df -p --min 0.2 --dec 0.1")
+
+    -- transup
+    , ((modm,               xK_Up    ),         spawn "transset-df -p --inc 0.1")
+
+    -- compositing
+    , ((modm,               xK_o     ),         spawn "compositing toggle")
+
+    -- chromium
+    , ((modm,               xK_g     ),         spawn "/home/mhiggin5/programs/bash/launch.sh chromium")
+
+    -- desktop ssh
+    , ((modm,               xK_s     ),         spawn "urxvtc -title ssh -e /home/mhiggin5/programs/bash/ssh-arch-phoenix.sh")
+
+    -- dmenucmd
+    , ((modm,               xK_p     ),         spawn "dmenu_run -fn font -nb colors[0][ColBG] -nf colors[0][ColFG] -sb colors[1][ColBG] -sf colors[1][ColFG]")
+
+    -- htop
+    , ((modm,               xK_q     ),         spawn "urxvtc -title htop -e htop")
+
+    -- minbrowser
+    , ((modm,               xK_w     ),         spawn "dwb")
+
+    -- mutt
+    , ((modm,               xK_e     ),         spawn "/home/mhiggin5/programs/bash/launch.sh mutt")
+
+    -- ranger
+    , ((modm,               xK_d     ),         spawn "urxvtc -e ranger")
+
+    -- weechat
+    , ((modm,               xK_i     ),         spawn "/home/mhiggin5/programs/bash/launch.sh weechat")
+
+    -- dmenuwatchvideo
+    , ((modm .|. shiftMask, xK_y     ),         spawn "home/mhiggin5/programs/bash/flash-video-dmenu.sh")
+
+    -- mediactrl
+    , ((modm .|. shiftMask, xK_z     ),         spawn "/home/mhiggin5/programs/c/mediactrl/mediactrl -p")
+    , ((modm .|. shiftMask, xK_c     ),         spawn "/home/mhiggin5/programs/c/mediactrl/mediactrl -t")
+    , ((modm .|. shiftMask, xK_v     ),         spawn "/home/mhiggin5/programs/c/mediactrl/mediactrl -s")
+    , ((modm .|. shiftMask, xK_b     ),         spawn "/home/mhiggin5/programs/c/mediactrl/mediactrl -n")
+
+    -- mpd controls
+    , ((modm,               xK_z     ),         spawn "mpc prev")
+    , ((modm,               xK_c     ),         spawn "mpc toggle")
+    , ((modm,               xK_v     ),         spawn "mpc stop")
+    , ((modm,               xK_b     ),         spawn "mpc next")
+
+    -- msearch
+    , ((modm,               xK_r     ),         spawn "urxvtc -title msearch -e /home/mhiggin5/programs/python/msearch.py -k")
+
+    -- ncmpcpp
+    , ((modm,               xK_n     ),         spawn "/home/mhiggin5/programs/bash/launch.sh ncmpcpp")
+
+    -- utub
+    , ((modm,               xK_u     ),         spawn "urxvtc -title utub -e utub-curses")
+
+    -- volume
+    , ((modm,               xK_Next  ),         spawn "/home/mhiggin5/programs/bash/ossvol -d 1")
+    , ((modm,               xK_Prior ),         spawn "/home/mhiggin5/programs/bash/ossvol -i 1")
+
+    -- watchvideo
+    , ((modm,               xK_y     ),         spawn "urxvtc -title fmplayer -e /home/mhiggin5/programs/python/flash-mplayer.py")
     ]
     ++
 
