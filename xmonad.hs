@@ -13,6 +13,7 @@ import qualified Data.Map        as M
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog hiding (dzen)
 import XMonad.Hooks.UrgencyHook
+import XMonad.Actions.CycleWS
 import XMonad.Actions.WindowGo
 import XMonad.Util.Run
 import Dzen
@@ -58,6 +59,15 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --  Reset the layouts on the current workspace to default
     , ((modm .|. shiftMask, xK_space ),         setLayout $ XMonad.layoutHook conf)
 
+    -- go to previous workspace
+    , ((modm,               xK_Tab   ),         toggleWS)
+
+    -- move/shift windows left/right
+    , ((modm,               xK_Left  ),         prevWS)
+    , ((modm,               xK_Right ),         nextWS)
+    , ((modm .|. shiftMask, xK_Left  ),         shifToPrev)
+    , ((modm .|. shiftMask, xK_Right ),         shiftToNext)
+
     -- Resize viewed windows to the correct size
     , ((modm,               xK_n     ),         refresh)
 
@@ -95,9 +105,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_bracketright),   sendMessage (IncMasterN (-1)))
 
     -- Toggle the status bar gap
-    -- Use this binding with avoidStruts from Hooks.ManageDocks.
-    -- See also the statusBar function from Hooks.DynamicLog.
-    --
     , ((modm .|. controlMask, xK_b   ),         sendMessage ToggleStruts)
 
     -- Quit xmonad
