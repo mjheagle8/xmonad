@@ -10,6 +10,13 @@ import System.Exit
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.DynamicLog hiding (dzen)
+import XMonad.Hooks.UrgencyHook
+import XMonad.Actions.WindowGo
+import XMonad.Util.Run
+import Dzen
+
 -- set terminal
 myTerminal      = "urxvtc"
 
@@ -21,7 +28,7 @@ myFocusFollowsMouse = True
 myBorderWidth   = 1
 
 -- "windows key" is usually mod4Mask, left alt is mod1mask
-myModMask       = mod1Mask
+myModMask       = mod4Mask
 
 myWorkspaces    = ["web","media","chat"] ++ map show [4..5]
 
@@ -91,7 +98,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
     -- See also the statusBar function from Hooks.DynamicLog.
     --
-    -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
+    , ((modm .|. controlMask, xK_b   ),         sendMessage ToggleStruts)
 
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ),         io (exitWith ExitSuccess))
@@ -99,8 +106,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Restart xmonad
     , ((modm,               xK_q     ),         spawn "xmonad --recompile; xmonad --restart")
 
-    -- lock TODO: fix
-    , ((modm .|. shiftMask, xK_l     ),         spawn "slock")
+    -- lock
+    , ((modm .|. shiftMask, xK_l     ),         spawn "xautolock -locknow")
 
     -- power
     , ((modm,               xK_Delete),         spawn "/home/mhiggin5/programs/bash/exit.sh")
@@ -121,10 +128,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_s     ),         spawn "urxvtc -title ssh -e /home/mhiggin5/programs/bash/ssh-arch-phoenix.sh")
 
     -- dmenucmd
-    , ((modm,               xK_p     ),         spawn "dmenu_run -fn font -nb colors[0][ColBG] -nf colors[0][ColFG] -sb colors[1][ColBG] -sf colors[1][ColFG]")
+    , ((modm,               xK_p     ),         spawn "dmenu_run")
 
     -- htop
-    , ((modm,               xK_q     ),         spawn "urxvtc -title htop -e htop")
+    , ((modm,               xK_grave ),         spawn "urxvtc -title htop -e htop")
+    , ((modm .|. shiftMask, xK_grave ),         runOrRaise "urxvtc -title htop -e htop" (title =? "htop"))
 
     -- minbrowser
     , ((modm,               xK_w     ),         spawn "dwb")
@@ -271,7 +279,35 @@ myEventHook = mempty
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
-myLogHook = return ()
+myLogHook h = dynamicLogWithPP $ defaultPP
+    -- display current workspace as darkgrey on light grey (opposite of 
+    -- default colors)
+    { ppCurrent         = dzenColor "#303030" "#909090" . pad 
+
+    -- display other workspaces which contain windows as a brighter grey
+    , ppHidden          = dzenColor "#909090" "" . pad 
+
+    -- display other workspaces with no windows as a normal grey
+    , ppHiddenNoWindows = dzenColor "#606060" "" . pad 
+
+    -- display the current layout as a brighter grey
+    , ppLayout          = dzenColor "#909090" "" . pad 
+
+    -- if a window on a hidden workspace needs my attention, color it so
+    , ppUrgent          = dzenColor "#ff0000" "" . pad . dzenStrip
+
+    -- shorten if it goes over 100 characters
+    , ppTitle           = shorten 100  
+
+    -- no separator between workspaces
+    , ppWsSep           = ""
+
+    -- put a few spaces between each object
+    , ppSep             = "  "
+
+    -- output to the handle we were given as an argument
+    , ppOutput          = hPutStrLn h
+    }
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -285,10 +321,14 @@ myStartupHook = return ()
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
-main = xmonad defaults
-
-defaults = defaultConfig {
-      -- simple stuff
+main = do 
+    {- let dzenOpts = "-ta r -y 0 -xs 1 -bg \"#222222\" -fg \"#AAAAAA\" -fn \"-*-termsyn-medium-*-*-*-11-*-*-*-*-*-iso8859-2\"" -}
+    {- d <- spawnPipe "dzen2 -ta r -y 0 -xs 1 -bg \"#222222\" -fg \"#AAAAAA\" -fn \"-*-termsyn-medium-*-*-*-11-*-*-*-*-*-iso8859-2\"" -}
+    {- spawn "conky -c ~/.config/conky/arch-slaptop-xmonad | dzen2 -ta r -y 0 -xs 2 -bg \"#222222\" -fg \"#AAAAAA\" -fn \"-*-termsyn-medium-*-*-*-11-*-*-*-*-*-iso8859-2\"" -}
+    d <- spawnDzen myLeftBar
+    spawnToDzen "conky -c ~/.config/conky/arch-slaptop-xmonad" myRightBar
+    xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig {
+        -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
         borderWidth        = myBorderWidth,
@@ -297,14 +337,30 @@ defaults = defaultConfig {
         normalBorderColor  = myNormalBorderColor,
         focusedBorderColor = myFocusedBorderColor,
 
-      -- key bindings
+        -- key bindings
         keys               = myKeys,
         mouseBindings      = myMouseBindings,
 
-      -- hooks, layouts
-        layoutHook         = myLayout,
-        manageHook         = myManageHook,
+        -- hooks, layouts
+        layoutHook         = avoidStruts $ myLayout,
+        manageHook         = myManageHook <+> manageDocks,
         handleEventHook    = myEventHook,
-        logHook            = myLogHook,
+        logHook            = myLogHook d,
         startupHook        = myStartupHook
-    }
+        }
+
+    where
+        myLeftBar :: DzenConf
+        myLeftBar = defaultDzen
+            { bgColor   = Just "#222222"
+            , fgColor   = Just "#AAAAAA"
+            , font      = Just "-*-termsyn-medium-*-*-*-11-*-*-*-*-*-iso8859-2"
+            }
+        myRightBar :: DzenConf
+        myRightBar = defaultDzen
+            { bgColor   = Just "#222222"
+            , fgColor   = Just "#AAAAAA"
+            , screen    = Just 1
+            , alignment = Just RightAlign
+            , font      = Just "-*-termsyn-medium-*-*-*-11-*-*-*-*-*-iso8859-2"
+            }
