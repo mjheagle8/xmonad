@@ -104,7 +104,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_q     ),         io (exitWith ExitSuccess))
 
     -- Restart xmonad
-    , ((modm,               xK_q     ),         spawn "xmonad --recompile; xmonad --restart")
+    , ((modm,               xK_q     ),         spawn "xmonad --recompile && killall dzen2; xmonad --restart")
 
     -- lock
     , ((modm .|. shiftMask, xK_l     ),         spawn "xautolock -locknow")
@@ -255,8 +255,7 @@ myLayout = tiled ||| Mirror tiled ||| Full
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "MPlayer"        --> doFloat
-    , className =? "Gimp"           --> doFloat
+    [ className =? "Gimp"           --> doFloat
     , className =? "Chromium"       --> doShift (myWorkspaces !! 0)
     , title     =? "ncmpcpp"        --> doShift (myWorkspaces !! 1)
     , title     =? "utub"           --> doShift (myWorkspaces !! 1)
@@ -280,30 +279,29 @@ myEventHook = mempty
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
 myLogHook h = dynamicLogWithPP $ defaultPP
-    -- display current workspace as darkgrey on light grey (opposite of 
-    -- default colors)
-    { ppCurrent         = dzenColor "#303030" "#909090" . pad 
+    -- display current workspace inverted
+    { ppCurrent         = dzenColor "#222222" "#AAAAAA" . pad
 
-    -- display other workspaces which contain windows as a brighter grey
-    , ppHidden          = dzenColor "#909090" "" . pad 
+    -- display other workspaces which contain windows as brighter
+    , ppHidden          = dzenColor "#AAAAAA" "" . pad
 
-    -- display other workspaces with no windows as a normal grey
-    , ppHiddenNoWindows = dzenColor "#606060" "" . pad 
+    -- display other workspaces with no windows darker
+    , ppHiddenNoWindows = dzenColor "#777777" "" . pad
 
-    -- display the current layout as a brighter grey
-    , ppLayout          = dzenColor "#909090" "" . pad 
+    -- display the current layout
+    , ppLayout          = dzenColor "#777777" "" . pad
 
     -- if a window on a hidden workspace needs my attention, color it so
-    , ppUrgent          = dzenColor "#ff0000" "" . pad . dzenStrip
+    , ppUrgent          = dzenColor "#FF0000" "" . pad . dzenStrip
 
     -- shorten if it goes over 100 characters
-    , ppTitle           = shorten 100  
+    , ppTitle           = pad . shorten 100
 
     -- no separator between workspaces
     , ppWsSep           = ""
 
-    -- put a few spaces between each object
-    , ppSep             = "  "
+    -- object separator 
+    , ppSep             = "|"
 
     -- output to the handle we were given as an argument
     , ppOutput          = hPutStrLn h
