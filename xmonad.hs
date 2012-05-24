@@ -31,7 +31,9 @@ myBorderWidth   = 1
 -- "windows key" is usually mod4Mask, left alt is mod1mask
 myModMask       = mod4Mask
 
-myWorkspaces    = ["web","media","chat"] ++ map show [4..5]
+wkspcs          = zip (["web","media","chat"] ++ map show [4..5]) [1..5]
+mkWkspcClkbl i  = "^ca(1, xdotool key super+" ++ show(snd i) ++ ")" ++ fst i ++ "^ca()"
+myWorkspaces    = map mkWkspcClkbl wkspcs
 
 -- border colors for unfocused and focused windows, respectively.
 myNormalBorderColor  = "#222222"
@@ -65,7 +67,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- move/shift windows left/right
     , ((modm,               xK_Left  ),         prevWS)
     , ((modm,               xK_Right ),         nextWS)
-    , ((modm .|. shiftMask, xK_Left  ),         shifToPrev)
+    , ((modm .|. shiftMask, xK_Left  ),         shiftToPrev)
     , ((modm .|. shiftMask, xK_Right ),         shiftToNext)
 
     -- Resize viewed windows to the correct size
