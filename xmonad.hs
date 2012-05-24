@@ -334,6 +334,7 @@ main = do
     {- spawn "conky -c ~/.config/conky/arch-slaptop-xmonad | dzen2 -ta r -y 0 -xs 2 -bg \"#222222\" -fg \"#AAAAAA\" -fn \"-*-termsyn-medium-*-*-*-11-*-*-*-*-*-iso8859-2\"" -}
     d <- spawnDzen myLeftBar
     spawnToDzen "conky -c ~/.config/conky/arch-slaptop-xmonad" myRightBar
+    nScreens <- countScreens
     xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig {
         -- simple stuff
         terminal           = myTerminal,
