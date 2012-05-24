@@ -298,7 +298,7 @@ myLogHook h = dynamicLogWithPP $ defaultPP
     , ppHiddenNoWindows = dzenColor "#777777" "" . pad
 
     -- display the current layout
-    , ppLayout          = dzenColor "#777777" "" . pad
+    , ppLayout          = dzenColor "#777777" "" . pad . wrap "^ca(1,xdotool key super+space)" "^ca()"
 
     -- if a window on a hidden workspace needs my attention, color it so
     , ppUrgent          = dzenColor "#FF0000" "" . pad . dzenStrip
