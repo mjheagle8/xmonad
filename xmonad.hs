@@ -31,7 +31,7 @@ myBorderWidth   = 1
 -- "windows key" is usually mod4Mask, left alt is mod1mask
 myModMask       = mod4Mask
 
-wkspcs          = zip (["web","media","chat"] ++ map show [4..5]) [1..5]
+wkspcs          = zip (map (\x -> "^i(/usr/share/icons/stlarch_icons/" ++ x ++ ".xbm)") (["arch1","headphone2","messenger1"] ++ map (\x -> "dice" ++ (show x)) [4..5])) [1..5]
 mkWkspcClkbl i  = "^ca(1, xdotool key super+" ++ show(snd i) ++ ")" ++ fst i ++ "^ca()"
 myWorkspaces    = map mkWkspcClkbl wkspcs
 
@@ -290,11 +290,11 @@ myLogHook h = dynamicLogWithPP $ defaultPP
     -- display current workspace blue
     { ppCurrent         = dzenColor "#0055FF" "#222222" . pad
 
-    -- normal display other visible workspace
-    , ppVisible         = dzenColor "#AAAAAA" "" . pad
+    -- display other visible workspace in cyan
+    , ppVisible         = dzenColor "#46A4FF" "" . pad
 
-    -- display other workspaces which contain windows slightly dimmed
-    , ppHidden          = dzenColor "#828282" "" . pad
+    -- display other workspaces which contain windows white
+    , ppHidden          = dzenColor "#AAAAAA" "" . pad
 
     -- display other workspaces with no windows dimmed
     , ppHiddenNoWindows = dzenColor "#444444" "" . pad
@@ -336,9 +336,6 @@ myStartupHook = return ()
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 main = do 
-    {- let dzenOpts = "-ta r -y 0 -xs 1 -bg \"#222222\" -fg \"#AAAAAA\" -fn \"-*-termsyn-medium-*-*-*-11-*-*-*-*-*-iso8859-2\"" -}
-    {- d <- spawnPipe "dzen2 -ta r -y 0 -xs 1 -bg \"#222222\" -fg \"#AAAAAA\" -fn \"-*-termsyn-medium-*-*-*-11-*-*-*-*-*-iso8859-2\"" -}
-    {- spawn "conky -c ~/.config/conky/arch-slaptop-xmonad | dzen2 -ta r -y 0 -xs 2 -bg \"#222222\" -fg \"#AAAAAA\" -fn \"-*-termsyn-medium-*-*-*-11-*-*-*-*-*-iso8859-2\"" -}
     d <- spawnDzen myLeftBar
     spawnToDzen "conky -c ~/.config/conky/arch-slaptop-xmonad" myRightBar
     xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig {
