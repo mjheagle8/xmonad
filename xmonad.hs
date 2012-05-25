@@ -264,8 +264,7 @@ myLayout = tiled ||| Mirror tiled ||| Full
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "Gimp"           --> doFloat
-    , className =? "Chromium"       --> doShift (myWorkspaces !! 0)
+    [ className =? "Chromium"       --> doShift (myWorkspaces !! 0)
     , title     =? "ncmpcpp"        --> doShift (myWorkspaces !! 1)
     , title     =? "utub"           --> doShift (myWorkspaces !! 1)
     , title     =? "fmplayer"       --> doShift (myWorkspaces !! 1)
