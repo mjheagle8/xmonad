@@ -152,6 +152,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- ranger
     , ((modm,               xK_d     ),         spawn "urxvtc -e ranger")
 
+    -- tasknc
+    , ((modm,               xK_a     ),         spawn "urxvtc -e tasknc")
+
     -- weechat
     , ((modm,               xK_i     ),         spawn "/home/mhiggin5/programs/bash/launch.sh weechat")
 
