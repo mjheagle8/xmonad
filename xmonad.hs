@@ -288,28 +288,31 @@ myEventHook = mempty
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
 myLogHook h = dynamicLogWithPP $ defaultPP
-    -- display current workspace inverted
-    { ppCurrent         = dzenColor "#222222" "#AAAAAA" . pad
+    -- display current workspace blue
+    { ppCurrent         = dzenColor "#0055FF" "#222222" . pad
 
-    -- display other workspaces which contain windows as brighter
-    , ppHidden          = dzenColor "#AAAAAA" "" . pad
+    -- normal display other visible workspace
+    , ppVisible         = dzenColor "#AAAAAA" "" . pad
 
-    -- display other workspaces with no windows darker
-    , ppHiddenNoWindows = dzenColor "#777777" "" . pad
+    -- display other workspaces which contain windows slightly dimmed
+    , ppHidden          = dzenColor "#828282" "" . pad
+
+    -- display other workspaces with no windows dimmed
+    , ppHiddenNoWindows = dzenColor "#444444" "" . pad
 
     -- display the current layout
     , ppLayout          = dzenColor "#777777" "" . pad . wrap "^ca(1,xdotool key super+space)" "^ca()"
 
     -- if a window on a hidden workspace needs my attention, color it so
-    , ppUrgent          = dzenColor "#FF0000" "" . pad . dzenStrip
+    , ppUrgent          = dzenColor "#FF0000" "" . pad
 
-    -- shorten if it goes over 100 characters
+    -- shorten window title it goes over 100 characters
     , ppTitle           = pad . shorten 100
 
     -- no separator between workspaces
     , ppWsSep           = ""
 
-    -- object separator 
+    -- object separator
     , ppSep             = "|"
 
     -- output to the handle we were given as an argument
@@ -334,7 +337,6 @@ main = do
     {- spawn "conky -c ~/.config/conky/arch-slaptop-xmonad | dzen2 -ta r -y 0 -xs 2 -bg \"#222222\" -fg \"#AAAAAA\" -fn \"-*-termsyn-medium-*-*-*-11-*-*-*-*-*-iso8859-2\"" -}
     d <- spawnDzen myLeftBar
     spawnToDzen "conky -c ~/.config/conky/arch-slaptop-xmonad" myRightBar
-    nScreens <- countScreens
     xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig {
         -- simple stuff
         terminal           = myTerminal,
