@@ -300,7 +300,12 @@ myLogHook h = dynamicLogWithPP $ defaultPP
     , ppHiddenNoWindows = dzenColor "#444444" "" . pad
 
     -- display the current layout
-    , ppLayout          = dzenColor "#777777" "" . pad . wrap "^ca(1,xdotool key super+space)" "^ca()"
+    , ppLayout          = dzenColor "#AAAAAA" "" . pad . wrap "^ca(1,xdotool key super+space)" "^ca()" . 
+                        (\x -> case x of
+                            "Tall" -> "^i(/usr/share/icons/stlarch_icons/tile.xbm)"
+                            "Mirror Tall" -> "^i(/usr/share/icons/stlarch_icons/bstack.xbm)"
+                            "Full" -> "^i(/usr/share/icons/stlarch_icons/monocle2.xbm)"
+                        )
 
     -- if a window on a hidden workspace needs my attention, color it so
     , ppUrgent          = dzenColor "#FF0000" "" . pad
@@ -312,7 +317,7 @@ myLogHook h = dynamicLogWithPP $ defaultPP
     , ppWsSep           = ""
 
     -- object separator
-    , ppSep             = "|"
+    , ppSep             = ""
 
     -- output to the handle we were given as an argument
     , ppOutput          = hPutStrLn h
