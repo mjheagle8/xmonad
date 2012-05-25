@@ -41,7 +41,10 @@ myFocusedBorderColor = "#0055ff"
 
 ------------------------------------------------------------------------
 -- key bindings. add, modify or remove key bindings here.
---
+
+-- moveAndSpawn
+moveAndSpawn ws cmd  = windows (W.view (myWorkspaces !! ws)) >> spawn cmd
+
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
@@ -131,7 +134,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_o     ),         spawn "compositing toggle")
 
     -- chromium
-    , ((modm,               xK_g     ),         spawn "/home/mhiggin5/programs/bash/launch.sh chromium")
+    , ((modm,               xK_g     ),         moveAndSpawn 0 "/home/mhiggin5/programs/bash/launch.sh chromium")
 
     -- desktop ssh
     , ((modm,               xK_s     ),         spawn "urxvtc -title ssh -e /home/mhiggin5/programs/bash/ssh-arch-phoenix.sh")
@@ -147,7 +150,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_w     ),         spawn "dwb")
 
     -- mutt
-    , ((modm,               xK_e     ),         spawn "/home/mhiggin5/programs/bash/launch.sh mutt")
+    , ((modm,               xK_e     ),         moveAndSpawn 2 "/home/mhiggin5/programs/bash/launch.sh mutt")
 
     -- ranger
     , ((modm,               xK_d     ),         spawn "urxvtc -e ranger")
@@ -156,7 +159,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_a     ),         spawn "urxvtc -e tasknc")
 
     -- weechat
-    , ((modm,               xK_i     ),         spawn "/home/mhiggin5/programs/bash/launch.sh weechat")
+    {- , ((modm,               xK_i     ),         windows (W.view (myWorkspaces !! 2)) >> spawn "/home/mhiggin5/programs/bash/launch.sh weechat") -}
+    , ((modm,               xK_i     ),         moveAndSpawn 2 "/home/mhiggin5/programs/bash/launch.sh weechat")
 
     -- dmenuwatchvideo
     , ((modm .|. shiftMask, xK_y     ),         spawn "home/mhiggin5/programs/bash/flash-video-dmenu.sh")
@@ -174,20 +178,20 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_b     ),         spawn "mpc next")
 
     -- msearch
-    , ((modm,               xK_r     ),         spawn "urxvtc -title msearch -e /home/mhiggin5/programs/python/msearch.py -k")
+    , ((modm,               xK_r     ),         moveAndSpawn 1 "urxvtc -title msearch -e /home/mhiggin5/programs/python/msearch.py -k")
 
     -- ncmpcpp
-    , ((modm,               xK_n     ),         spawn "/home/mhiggin5/programs/bash/launch.sh ncmpcpp")
+    , ((modm,               xK_n     ),         moveAndSpawn 1 "/home/mhiggin5/programs/bash/launch.sh ncmpcpp")
 
     -- utub
-    , ((modm,               xK_u     ),         spawn "urxvtc -title utub -e utub-curses")
+    , ((modm,               xK_u     ),         moveAndSpawn 1 "urxvtc -title utub -e utub-curses")
 
     -- volume
     , ((modm,               xK_Next  ),         spawn "/home/mhiggin5/programs/bash/ossvol -d 1")
     , ((modm,               xK_Prior ),         spawn "/home/mhiggin5/programs/bash/ossvol -i 1")
 
     -- watchvideo
-    , ((modm,               xK_y     ),         spawn "urxvtc -title fmplayer -e /home/mhiggin5/programs/python/flash-mplayer.py")
+    , ((modm,               xK_y     ),         moveAndSpawn 1 "urxvtc -title fmplayer -e /home/mhiggin5/programs/python/flash-mplayer.py")
     ]
     ++
 
