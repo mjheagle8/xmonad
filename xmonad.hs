@@ -318,7 +318,7 @@ myLogHook h = dynamicLogWithPP $ defaultPP
     , ppUrgent          = dzenColor "#FF0000" "" . pad
 
     -- shorten window title it goes over 100 characters
-    , ppTitle           = pad . shorten 100
+    , ppTitle           = dzenColor "#0055FF" "" . pad . shorten 100
 
     -- no separator between workspaces
     , ppWsSep           = ""
@@ -375,10 +375,8 @@ main = do
             , font      = Just "-*-termsyn-medium-*-*-*-11-*-*-*-*-*-iso8859-2"
             }
         myRightBar :: DzenConf
-        myRightBar = defaultDzen
-            { bgColor   = Just "#222222"
-            , fgColor   = Just "#AAAAAA"
-            , screen    = Just 1
+        myRightBar = myLeftBar
+            { screen    = Just 1
             , alignment = Just RightAlign
             , font      = Just "-*-termsyn-medium-*-*-*-11-*-*-*-*-*-iso8859-2"
             }
