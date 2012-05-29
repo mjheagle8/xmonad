@@ -51,7 +51,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm,               xK_Return),         spawn $ XMonad.terminal conf)
 
     -- launch dmenu
-    , ((modm,               xK_p     ),         spawn "dmenu_run")
+    , ((modm,               xK_p     ),         spawn "dmenu_run -fn '-*-termsyn-medium-*-*-*-11-*-*-*-*-*-iso8859-2' -nf '#AAAAAA' -nb '#222222' -sb '#222222' -sf '#0055FF'")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ),         kill)
@@ -138,9 +138,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- desktop ssh
     , ((modm,               xK_s     ),         spawn "urxvtc -title ssh -e /home/mhiggin5/programs/bash/ssh-arch-phoenix.sh")
-
-    -- dmenucmd
-    , ((modm,               xK_p     ),         spawn "dmenu_run")
 
     -- htop
     , ((modm,               xK_grave ),         spawn "urxvtc -title htop -e htop")
