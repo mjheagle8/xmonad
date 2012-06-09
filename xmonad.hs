@@ -188,7 +188,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_Prior ),         spawn "/home/mhiggin5/programs/bash/ossvol -i 1")
 
     -- watchvideo
-    , ((modm,               xK_y     ),         moveAndSpawn 1 "urxvtc -title fmplayer -e /home/mhiggin5/programs/python/flash-mplayer.py")
+    {- , ((modm,               xK_y     ),         moveAndSpawn 1 "urxvtc -title fmplayer -e /home/mhiggin5/programs/python/flash-mplayer.py") -}
+    , ((modm,               xK_y     ),         moveAndSpawn 1 "/home/mhiggin5/programs/.bin/fmplayer")
     ]
     ++
 
