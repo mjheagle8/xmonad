@@ -184,8 +184,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_u     ),         moveAndSpawn 1 "urxvtc -title utub -e utub-curses")
 
     -- volume
-    , ((modm,               xK_Next  ),         spawn "/home/mhiggin5/programs/bash/ossvol -d 1")
-    , ((modm,               xK_Prior ),         spawn "/home/mhiggin5/programs/bash/ossvol -i 1")
+    , ((modm,               xK_Next  ),         spawn "/home/mhiggin5/programs/bash/alsavol -d")
+    , ((modm,               xK_Prior ),         spawn "/home/mhiggin5/programs/bash/alsavol -i")
 
     -- watchvideo
     {- , ((modm,               xK_y     ),         moveAndSpawn 1 "urxvtc -title fmplayer -e /home/mhiggin5/programs/python/flash-mplayer.py") -}
