@@ -144,7 +144,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_grave ),         runOrRaise "urxvtc -title htop -e htop" (title =? "htop"))
 
     -- minbrowser
-    , ((modm,               xK_w     ),         spawn "dwb")
+    , ((modm,               xK_w     ),         spawn "luakit")
 
     -- mutt
     , ((modm,               xK_e     ),         moveAndSpawn 2 "/home/mhiggin5/programs/bash/launch.sh mutt")
