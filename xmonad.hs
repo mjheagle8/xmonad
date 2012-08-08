@@ -269,15 +269,16 @@ myLayout = tiled ||| Mirror tiled ||| Full
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "Chromium"       --> doShift (myWorkspaces !! 0)
-    , title     =? "ncmpcpp"        --> doShift (myWorkspaces !! 1)
-    , title     =? "utub"           --> doShift (myWorkspaces !! 1)
-    , title     =? "fmplayer"       --> doShift (myWorkspaces !! 1)
-    , title     =? "msearch"        --> doShift (myWorkspaces !! 1)
-    , title     =? "mutt"           --> doShift (myWorkspaces !! 2)
-    , title     =? "weechat"        --> doShift (myWorkspaces !! 2)
-    , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    [ className =? "Chromium"           --> doShift (myWorkspaces !! 0)
+    , title     =? "ncmpcpp"            --> doShift (myWorkspaces !! 1)
+    , title     =? "utub"               --> doShift (myWorkspaces !! 1)
+    , title     =? "fmplayer"           --> doShift (myWorkspaces !! 1)
+    , title     =? "msearch"            --> doShift (myWorkspaces !! 1)
+    , title     =? "mutt"               --> doShift (myWorkspaces !! 2)
+    , title     =? "weechat"            --> doShift (myWorkspaces !! 2)
+    , className =? "qemu-system-x86_64" --> doFloat
+    , resource  =? "desktop_window"     --> doIgnore
+    , resource  =? "kdesktop"           --> doIgnore ]
 
 ------------------------------------------------------------------------
 -- Event handling
